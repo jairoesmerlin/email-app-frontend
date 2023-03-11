@@ -1,23 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import EmailList from './component/EmailList';
+import EmailContent from './component/EmailContent';
+import Modal from './component/Modal';
+
+// App component with routing
 
 function App() {
+
+  // State for showing modal
+
+  const [showModal, setShowModal] = useState(false);
+
+  // Handler for opening modal
+
+  const handleNewEmail = () => {
+    setShowModal(true);
+  };
+
+  // Handler for closing modal
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  // Render app with routing
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/emails">Emails</Link>
+            </li>
+            <li>
+              <button onClick={handleNewEmail}>New Email</button>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route path="/emails" element={<EmailList />} />
+          <Route path="/emails/:id" element={<EmailContent />} />
+        </Routes>
+        <Modal show={showModal} onClose={handleCloseModal} />
+      </Router>
     </div>
   );
 }
